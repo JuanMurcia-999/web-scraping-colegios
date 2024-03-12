@@ -1,45 +1,35 @@
 from Abrir import Abrir
-from Inicio import Selects
-from IDcolegios import ListaColegiosID
 from DatosColegio import DatosUnicos
+from primeralista import PrimerLista
+from GenerarExcel import GenerarExcel 
+from IDcolegiosUnicos import colegiosUnicos
+from Atributos import AtributosColegios
 
-import itertools
-from time import sleep
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-
-
-Localidades = list(range(1,3))
-
+Localidades = list(range(1,21))
 driver = Abrir()
-wait = WebDriverWait(driver, 5)
-Ids=[]
 
+IdsBuenos,IdsMalos = PrimerLista(driver,Localidades)
+print('/////////////////////////////Data Buenos///////////////////////////////////////////////')
+Data1=DatosUnicos(driver, IdsBuenos)
+#GenerarExcel(DataBuenos)
+print('/////////////////////////////Data Malos////////////////////////////////////////////////')
+Data2=colegiosUnicos(driver,IdsMalos)
 
-for localidad in Localidades:
-    driver.get('https://dueb.educacionbogota.edu.co/Dueb/')
-    Selects(driver,localidad)
-    
+Data_unificado = {}
 
-    PrimerListaWeb = wait.until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@href, '/Dueb/colegioEdit.sed?id=')]")))
-    
-    PrimerListaColegios=[]
+# Agregar los elementos de Data1 al diccionario unificado
+for key, value in Data1.items():
+    if key in Data2:
+        Data_unificado[key] = value + Data2[key]
+    else:
+        Data_unificado[key] = value
 
-    for elemento in PrimerListaWeb:
-        PrimerListaColegios.append(elemento.get_attribute('href'))
-    
-    
-    Ids.append(ListaColegiosID(driver,PrimerListaColegios))
-    print(PrimerListaColegios)
-    sleep(1)
-
-lista_unificada = list(itertools.chain(*Ids))
-print(lista_unificada)
-print(len(lista_unificada))    
-DatosUnicos(driver, lista_unificada)
-    
-
-
-#sleep(1)
+# Agregar los elementos de Data2 que no están en Data1 al diccionario unificado
+for key, value in Data2.items():
+        if key not in Data_unificado:
+            Data_unificado[key] = value
+        
+        
+for key, value in Data_unificado.items():
+    print(f'{key}{len(value)}')
+GenerarExcel(Data_unificado)

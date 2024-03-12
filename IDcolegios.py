@@ -3,6 +3,10 @@ from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+
+errores =[]
+#continue
 
 
 def ListaColegiosID(driver,PrimerListaColegios):
@@ -11,9 +15,12 @@ def ListaColegiosID(driver,PrimerListaColegios):
 
     for elementoLista in PrimerListaColegios:
         driver.get(elementoLista)
-        SegundoListaWeb = wait.until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@href, 'javascript:enviar')]")))
-        
-       
+        try:
+            SegundoListaWeb = wait.until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@href, 'javascript:enviar')]")))
+        except TimeoutException:
+            errores.append(elementoLista)
+            #print(f'error en la institucion {errores}')
+            continue
 
             
         for ele in SegundoListaWeb:
@@ -23,6 +30,7 @@ def ListaColegiosID(driver,PrimerListaColegios):
             print(idColegios)
             sleep(0.2)
             
-    return idColegios
+    return idColegios,errores
+    
     
     
