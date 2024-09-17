@@ -5,8 +5,9 @@ from GenerarExcel import GenerarExcel
 from IDcolegiosUnicos import colegiosUnicos
 from Atributos import AtributosColegios
 
-Localidades = list(range(1,21))
+Localidades = list(range(2,22))
 driver = Abrir()
+
 
 IdsBuenos,IdsMalos = PrimerLista(driver,Localidades)
 print('/////////////////////////////Data Buenos///////////////////////////////////////////////')
@@ -14,6 +15,7 @@ Data1=DatosUnicos(driver, IdsBuenos)
 #GenerarExcel(DataBuenos)
 print('/////////////////////////////Data Malos////////////////////////////////////////////////')
 Data2=colegiosUnicos(driver,IdsMalos)
+
 
 Data_unificado = {}
 

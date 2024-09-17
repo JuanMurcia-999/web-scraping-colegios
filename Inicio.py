@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import Select
 
 
 def Selects(driver,localidad):  
-    
+    print(driver,localidad)
     wait = WebDriverWait(driver, 5)
     #Configurando selects 
     SECTOR =Select (wait.until(EC.presence_of_element_located((By.ID, 'lstColegios_prmSector_id'))))
