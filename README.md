@@ -4,12 +4,12 @@ directamente de la pagina del ministerio de educacion
 
 Recuperando para un total de 701 colegios datos como
 
-Nombre
+Nombre,
 Direccion, 
-Localidad
-Codigo DANE
-Nombre y codigo de UPZ
-Si es cede principal
+Localidad,
+Codigo DANE,
+Nombre y codigo de UPZ,
+Si es cede principal,
 jornadas 
 
 
